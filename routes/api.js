@@ -1081,6 +1081,27 @@ router.get('/search/sfilemobi', async (req, res, next) => {
 	 res.json(loghandler.error)
 })
 })
+router.get('/search/ytsearch', async(req, res) => {
+  const yts = require('yt-search')
+  let text = req.query.query 
+  if(!text) return res.json({
+    status: false,
+    code: 503,
+    message: "enter query parameter!",
+    creator: creator
+  })
+  yts(text)
+  .then(async data => {
+    res.json({
+      status: true,
+      code: 200,
+      result: data.all,
+      creator: creator
+    })
+  }).catch(e => {
+    console.error(e)
+  })
+})
 // ***Random Images***
 router.get('/random/dinokuning', async(req, res) => {
   fetch(encodeURI(`https://raw.githubusercontent.com/Kira-Master/database/main/sticker/dinokuning.json`))
